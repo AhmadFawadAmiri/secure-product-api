@@ -6,6 +6,7 @@ import com.afa.demo0001.repository.CategoryRepository;
 import com.afa.demo0001.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +48,33 @@ public class ProductService {
                 savedProduct.getPrice(),
                 savedProduct.getCategory() !=null ? savedProduct.getCategory().getName():"Without Cagegory"
         );
+    }
+
+    @Transactional
+    public ProductDto updateProduct(Long id, Product newProductData){
+
+        Product existingProduct = productRepository
+                .findById(id).orElseThrow(()->new IllegalArgumentException("Product not found with ID " + id));
+        existingProduct.setName(newProductData.getName());
+        existingProduct.setPrice(newProductData.getPrice());
+
+        if(newProductData.getCategory() != null && newProductData.getCategory().getId() != null){
+            Category category = categoryRepository.findById(newProductData.getCategory().getId())
+                    .orElseThrow(()->new IllegalArgumentException("Category not found"));
+            existingProduct.setCategory(category);
+        }
+        Product updateProduct = productRepository.save(existingProduct);
+
+        return new ProductDto(
+                updateProduct.getId(),
+                updateProduct.getName(),
+                updateProduct.getPrice(),
+                updateProduct.getCategory()!=null?updateProduct.getCategory().getName():"Without Category");
+    }
+
+    public void deleteProduct(@PathVariable Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("Product not found with ID " + id));
+        productRepository.delete(product);
     }
 }

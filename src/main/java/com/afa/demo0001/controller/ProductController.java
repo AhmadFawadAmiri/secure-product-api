@@ -6,6 +6,7 @@ import com.afa.demo0001.model.Product;
 import com.afa.demo0001.repository.CategoryRepository;
 import com.afa.demo0001.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,4 +32,16 @@ public class ProductController {
     public ProductDto create(@Valid @RequestBody Product product){
         return productService.saveProductDto(product);
     }
+
+    @PutMapping("{id}")
+    public ProductDto update(@PathVariable Long id, @RequestBody Product product){
+        return productService.updateProduct(id, product);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Product deleted successfully!");
+    }
+
 }
