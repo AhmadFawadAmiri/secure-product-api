@@ -1,13 +1,12 @@
 package com.afa.demo0001.controller;
 
+import com.afa.demo0001.dto.CategoryDto;
 import com.afa.demo0001.model.Category;
 import com.afa.demo0001.service.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -20,12 +19,14 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAll(){
-        return categoryService.getAllCategories();
+    public List<CategoryDto> getAll(){
+        return categoryService.getAllCategoriesDto();
     }
 
     @PostMapping
-    public Category create(Category category){
-        return categoryService.saveCategory(category);
+    public CategoryDto create(@RequestBody Category category){
+        Category savedCategory = categoryService.saveCategory(category);
+
+        return new CategoryDto(savedCategory.getId(),savedCategory.getName());
     }
 }
