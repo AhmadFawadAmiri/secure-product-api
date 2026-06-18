@@ -58,7 +58,7 @@ POST /api/categories - Create a new category.
 
 ---
 #### 📝 Sample Request Body (POST /api/products)
-```JSON
+```json
 {
   "name": "Gaming Laptop",
   "price": 1500.0,
@@ -67,7 +67,7 @@ POST /api/categories - Create a new category.
 }
 ```
 #### 📦 Sample Response Body (200 OK)
-```JSON
+```json
 {
   "id": 33,
   "name": "Gaming Laptop",
@@ -79,7 +79,7 @@ POST /api/categories - Create a new category.
 #### ⚠️ Standardized Error Contract Sample
 If validation fails or an invalid ID is passed, the client receives a reliable JSON contract instead of a messy stack trace:
 
-```JSON
+```json
 {
 "status": 400,
 "error": "Validation Error",
@@ -112,17 +112,12 @@ when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
 }
 ```
 
-
-
-
-
-
 ---
 ### ⚙️ How to Run Locally
 Clone the repository:
 ``` Bash
 
-git clone [https://github.com/AhmadFawadAmiri/demo0001.git](https://github.com/AhmadFawadAmiri/demo0001.git)
+git clone https://github.com/AhmadFawadAmiri/demo0001.git
 ```
 Navigate to the project directory:
 
