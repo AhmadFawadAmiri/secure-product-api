@@ -238,9 +238,6 @@ By evolving this project, the following senior-level paradigms were mastered:
 This project was designed, developed, and containerized from scratch by:
 - **Name:** Ahmad Fawad Amiri
 - **GitHub:** [github.com/AhmadFawadAmiri](https://github.com/AhmadFawadAmiri)
-- **LinkedIn:** *[Ahmad Fawad Amiri](https://linkedin.com/in/ahmad-fawad-amiri-5537a922b/)*
-- **LinkedIn:** [![LinkedIn](https://img.shields.shields.shields.shields.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/ahmad-fawad-amiri-5537a922b/)
-- **LinkedIn:** [![LinkedIn](https://img.shields.shields.shields.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/ahmad-fawad-amiri-5537a922b/)
-
+- **LinkedIn:** [Ahmad Fawad Amiri](https://linkedin.com/in/ahmad-fawad-amiri-5537a922b/)
 
 Feel free to reach out for collaboration, code reviews, or job opportunities!
