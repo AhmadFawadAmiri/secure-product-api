@@ -2,21 +2,21 @@ package com.afa.demo0001.controller;
 
 
 import com.afa.demo0001.dto.AuthRequest;
+import com.afa.demo0001.model.Product;
 import com.afa.demo0001.model.User;
 import com.afa.demo0001.repository.UserRepository;
 import com.afa.demo0001.security.JwtUtils;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -28,7 +28,7 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
-    @PostMapping("register")
+    @PostMapping("/auth/register")
     public ResponseEntity<String> register(@Valid @RequestBody AuthRequest authRequest){
          if(userRepository.findByName(authRequest.getName()).isPresent()){
              return ResponseEntity.badRequest().body("Username is already taken!");
@@ -37,13 +37,18 @@ public class AuthController {
          User newUser = new User();
          newUser.setName(authRequest.getName());
          newUser.setPassword(passwordEncoder.encode(authRequest.getPassword()));
-         newUser.setRole("ROLE_ADMIN");
+         if(authRequest.getRole() != null) {
+             newUser.setRole(authRequest.getRole());
+         }else {
+             newUser.setRole("ROLE_ADMIN");
+         }
+
 
          userRepository.save(newUser);
          return ResponseEntity.ok("User registered successfully!");
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<String> login(@Valid @RequestBody AuthRequest authRequest){
         Optional<User> userOpt = userRepository.findByName(authRequest.getName());
 
@@ -53,5 +58,17 @@ public class AuthController {
         }
 
         return ResponseEntity.status(401).body("Invalid username or password!");
+    }
+
+    @DeleteMapping("/user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("User not found with ID " + id));
+        String currentLoggedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        if(user.getName().equals(currentLoggedUser)){
+            throw new IllegalArgumentException("You cannot delete your own account!");
+        }
+        userRepository.delete(user);
     }
 ;}

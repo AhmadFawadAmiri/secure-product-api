@@ -10,11 +10,14 @@ public class AuthRequest {
     @NotBlank(message = "Password is required")
     private String password;
 
+    private String role;
+
     public AuthRequest() {}
 
-    public AuthRequest(String name, String password) {
+    public AuthRequest(String name, String password, String role) {
         this.name = name;
         this.password = password;
+        this.role = role;
     }
 
     public String getName() {
@@ -31,5 +34,13 @@ public class AuthRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
