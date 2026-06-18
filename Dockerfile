@@ -1,7 +1,7 @@
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:21-jre-alpine
 
-WORKING /app
+WORKDIR /app
 
 COPY target/demo0001-0.0.1-SNAPSHOT.jar app.jar
 
