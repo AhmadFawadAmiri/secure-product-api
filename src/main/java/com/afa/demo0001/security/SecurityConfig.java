@@ -33,11 +33,11 @@ public class SecurityConfig {
                 .csrf(csrf->csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ROLE_CHEF")
-                        .requestMatchers(HttpMethod.POST, "/api/products/**").hasAnyAuthority("ROLE_CHEF", "ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/categories/**").hasAnyAuthority("ROLE_CHEF", "ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasAnyAuthority("ROLE_CHEF", "ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasAnyAuthority("ROLE_CHEF", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ROLE_CHIEF")
+                        .requestMatchers(HttpMethod.POST, "/api/products/**").hasAnyAuthority("ROLE_CHIEF", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/categories/**").hasAnyAuthority("ROLE_CHIEF", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasAnyAuthority("ROLE_CHIEF", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasAnyAuthority("ROLE_CHIEF", "ROLE_ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
