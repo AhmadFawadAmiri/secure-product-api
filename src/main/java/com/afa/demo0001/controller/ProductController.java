@@ -24,8 +24,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDto> getAll(){
-        return productService.getAllProductsDto();
+    public List<ProductDto> getProducts(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
+    ){
+        return productService.getAllProductsDto(pageNo, pageSize, sortBy);
     }
 
     @PostMapping
