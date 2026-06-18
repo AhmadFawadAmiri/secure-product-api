@@ -1,78 +1,122 @@
-# Product & Category Management API
+# 🚀 Enterprise Product & Category Management API (with JWT & Testing)
 
-A robust, production-ready RESTful API built with **Spring Boot** and **Spring Data JPA** utilizing a clean 3-tier architecture. This project demonstrates how to handle `Many-to-One` and `One-to-Many` database relationships efficiently while avoiding infinite serialization loops using the **DTO (Data Transfer Object) pattern**.
+A robust, production-ready RESTful API built with **Spring Boot 3.x** and **Spring Data JPA** utilizing a clean 3-tier architecture. This project has evolved from a basic CRUD service into a secure, scalable, and fully unit-tested backend baseline that handles complex database relationships while ensuring strict architectural decoupling.
 
 ---
 
-## 🚀 Key Features
+## 💎 Key Features
 
-* **Complete CRUD Operations:** Fully implemented Create, Read, Update, and Delete endpoints for both Products and Categories.
-* **DTO Pattern:** Decoupled Database Entities from the API Presentation Layer to optimize JSON responses and prevent infinite recursion loops.
-* **Global Exception Handling:** Centralized error management system transforming messy stack traces into user-friendly JSON responses with correct HTTP status codes.
-* **Data Validation:** Strict server-side validation using Jakarta Validation (`@NotBlank`, `@Min`, `@Size`).
-* **Transactional Safety:** Ensured database integrity during multi-step operations using Spring's `@Transactional`.
+* **🔒 Stateless Security (JWT):** Integrated with Spring Security using JSON Web Tokens (JWT) for secure, stateless authentication and Role-Based Access Control (RBAC).
+* **🏗️ Clean 3-Tier Layered Architecture:** Strict separation of concerns across Web (Controllers), Business (Services), and Data Access (Repositories) layers.
+* **📦 Advanced DTO Pattern:** Decouples Database Entities from the presentation layer using specialized payload objects (`ProductCreateRequest`, `ProductDto`) to protect schema integrity and eliminate infinite serialization loops.
+* **🛡️ Robust Many-to-Many Relationships:** Smart handling of self-healing `Product <-> Tag` relationships—automatically fetching existing tags or persisting new ones on the fly without database duplicates.
+* **📑 Pagination & Sorting:** Optimized database querying using Spring Data JPA `Pageable` (`pageNo`, `pageSize`, `sortBy`) to handle large datasets efficiently.
+* **🎯 Global Exception Handling:** A centralized `@RestControllerAdvice` that intercepts low-level system, validation, or business exceptions and translates them into predictable, frontend-friendly JSON contracts.
+* **🧪 Mockito-Powered Unit Testing:** Core business services are strictly guarded with isolated unit tests using Mockito for dependency mocking.
 
 ---
 
 ## 🛠️ Tech Stack & Tools
 
-* **Backend:** Java 17+, Spring Boot 3.x
+* **Backend Framework:** Java 17+, Spring Boot 3.x
+* **Security:** Spring Security, Nimbus-JWT / jjwt
 * **Data Access:** Spring Data JPA (Hibernate)
 * **Database:** MySQL / H2 (In-Memory Database)
+* **Validation:** Jakarta Validation API (`@NotBlank`, `@Min`, `@Size`)
 * **Build Tool:** Maven
-* **Testing:** Postman
+* **Testing:** JUnit 5, Mockito, Postman
 
 ---
 
 ## 📂 Project Architecture
 
-The project follows the standard **3-Tier Architecture** for clean separation of concerns:
-
 ```text
 src/main/java/com/afa/demo0001/
-├── controller/   # Web Layer (Exposes REST Endpoints)
-├── service/      # Business Logic Layer (Handles Transactions)
-├── repository/   # Data Access Layer (Interacts with Database)
-├── model/        # Database Entities (JPA Mapping & Validation)
+├── controller/   # Web Layer (Exposes Secure REST Endpoints)
+├── service/      # Business Logic Layer (Handles Transactions & Tag Mapping)
+├── repository/   # Data Access Layer (Spring Data JPA Repositories)
+├── model/        # Database Entities (Product, Category, Tag with JPA Mapping)
 ├── dto/          # Data Transfer Objects (Request/Response Payloads)
-└── exception/    # Global Exception Handler
+├── security/     # JWT Configuration, Filters, and Custom Deserializers
+└── exception/    # Global Exception Handler (@RestControllerAdvice)
+
 ```
----
-## 📡 API Endpoints & Usage
-### 1. Categories
-GET /api/categories - Fetch all categories (Returns CategoryDto).
+## 📡 Core API Endpoints Showcase
+### 1. Products Layer
+   GET /api/products?pageNo=0&pageSize=10&sortBy=price - Fetch paginated and sorted products.
 
-POST /api/categories - Create a new category.
+POST /api/products - Create a new product with automated tag binding. (Requires Authentication)
 
-### 2. Products
-GET /api/products - Fetch all products with their associated category names (Returns ProductDto).
-
-POST /api/products - Create a new product.
-
-PUT /api/products/{id} - Update an existing product by ID.
+PUT /api/products/{id} - Update an existing product and its tags. (Requires Authentication)
 
 DELETE /api/products/{id} - Delete a product by ID.
+
+### 2. Categories Layer
+   GET /api/categories - Fetch all categories.
+
+POST /api/categories - Create a new category.
 
 ---
 #### 📝 Sample Request Body (POST /api/products)
 ```JSON
 {
-    "name": "Samsung Galaxy S24",
-    "price": 1200.0,
-    "category": {
-        "id": 1
-    }
+  "name": "Gaming Laptop",
+  "price": 1500.0,
+  "categoryId": 1,
+  "tags": ["computer", "hardware", "gaming"]
 }
 ```
 #### 📦 Sample Response Body (200 OK)
 ```JSON
 {
-    "id": 5,
-    "name": "Samsung Galaxy S24",
-    "price": 1200.0,
-    "categoryName": "Electronics"
+  "id": 33,
+  "name": "Gaming Laptop",
+  "price": 1500.0,
+  "categoryName": "Electronics"
 }
 ```
+---
+#### ⚠️ Standardized Error Contract Sample
+If validation fails or an invalid ID is passed, the client receives a reliable JSON contract instead of a messy stack trace:
+
+```JSON
+{
+"status": 400,
+"error": "Validation Error",
+"message": "Validation failed: [name: The name should be at least 2 Characters.]",
+"timestamp": "2026-06-18T18:24:11.042"
+}
+```
+
+### 🧪 Testing Coverage
+The core business logic is monitored and guarded against regressions. You can execute the test suite locally via Maven:
+
+```Bash
+
+mvn test
+```
+
+#### Sample Service Test (ProductServiceTest):
+
+```Java
+@Test
+public void testSaveProductDto_Success() {
+when(categoryRepository.findById(1L)).thenReturn(Optional.of(mockCategory));
+when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
+
+    ProductDto result = productService.saveProductDto(request);
+
+    assertNotNull(result);
+    assertEquals("Test Phone", result.getName());
+    verify(productRepository, times(1)).save(any(Product.class));
+}
+```
+
+
+
+
+
+
 ---
 ### ⚙️ How to Run Locally
 Clone the repository:
@@ -97,15 +141,18 @@ mvn clean package
 Run the executable JAR file:
 ```Bash
 
-java -jar target/demo-0.01-SNAPSHOT.jar
+java -jar target/demo0001-0.0.1-SNAPSHOT.jar
 ```
 The server will start on http://localhost:8080.
 
-## 🎓 Learning Outcomes
-This project was built to master core backend development concepts, including:
+## 🎓 Advanced Learning Outcomes
+By evolving this project, the following senior-level paradigms were mastered:
 
-* **Solving Infinite Recursion** (StackOverflowError) caused by bidirectional JPA relationships.
+* **Stateless Token-Based Authentication:** Overcoming session-based limitations by implementing a secure JWT filter chain.
 
-* **Implementing custom validation and catching** MethodArgumentNotValidException.
+* **Advanced Relationship Lifecycle Handling:** Managing complex ManyToMany cascading states cleanly within @Transactional boundaries.
 
-* **Database debugging and logs** analysis in IntelliJ.
+* **Decoupling Architecture:** Understanding why raw JPA Entities should never cross the controller boundary, adopting the Request/Response DTO pattern instead.
+
+* **Mock-Driven Testing:** Writing clean Unit Tests using Mockito to isolate the service layer from actual database connectivity.
+

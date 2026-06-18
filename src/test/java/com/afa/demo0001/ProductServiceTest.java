@@ -3,8 +3,10 @@ package com.afa.demo0001;
 import com.afa.demo0001.dto.ProductDto;
 import com.afa.demo0001.model.Category;
 import com.afa.demo0001.model.Product;
+import com.afa.demo0001.model.ProductCreateRequest;
 import com.afa.demo0001.repository.CategoryRepository;
 import com.afa.demo0001.repository.ProductRepository;
+import com.afa.demo0001.repository.TagRepository;
 import com.afa.demo0001.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +30,9 @@ public class ProductServiceTest {
     @Mock
     private CategoryRepository categoryRepository;
 
+    @Mock
+    private TagRepository tagRepositoy;
+
     @InjectMocks
     private ProductService productService;
 
@@ -37,6 +43,11 @@ public class ProductServiceTest {
 
     @Test
     public void testSaveProductDto_Success(){
+        ProductCreateRequest request = new ProductCreateRequest();
+        request.setName("Test Phone");
+        request.setPrice(500.0);
+        request.setCategoryId(1L);
+        request.setTags(List.of("computer","hardware"));
 
         Category category = new Category();
         category.setId(1L);
@@ -55,8 +66,9 @@ public class ProductServiceTest {
 
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
+        when(tagRepositoy.findByName(anyString())).thenReturn(Optional.empty());
 
-        ProductDto resultDto = productService.saveProductDto(product);
+        ProductDto resultDto = productService.saveProductDto(request);
 
         assertNotNull(resultDto);
         assertEquals(100L, resultDto.getId());

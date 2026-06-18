@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Product {
     @Id
@@ -22,6 +25,14 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToMany
+    @JoinTable(
+            name="product_tags",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
     public Product(){}
 
     public Product(String name, double price) {
@@ -29,7 +40,6 @@ public class Product {
         this.price = price;
     }
     //Getters and Setters
-
     public Category getCategory() {
         return category;
     }
@@ -60,5 +70,13 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

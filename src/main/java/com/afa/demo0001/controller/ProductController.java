@@ -1,8 +1,7 @@
 package com.afa.demo0001.controller;
 
 import com.afa.demo0001.dto.ProductDto;
-import com.afa.demo0001.model.Category;
-import com.afa.demo0001.model.Product;
+import com.afa.demo0001.model.ProductCreateRequest;
 import com.afa.demo0001.repository.CategoryRepository;
 import com.afa.demo0001.service.ProductService;
 import jakarta.validation.Valid;
@@ -33,13 +32,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDto create(@Valid @RequestBody Product product){
-        return productService.saveProductDto(product);
+    public ProductDto create(@Valid @RequestBody ProductCreateRequest request){
+        return productService.saveProductDto(request);
     }
 
     @PutMapping("{id}")
-    public ProductDto update(@PathVariable Long id, @RequestBody Product product){
-        return productService.updateProduct(id, product);
+    public ProductDto update(@PathVariable Long id, @RequestBody ProductCreateRequest request){
+        return productService.updateProduct(id, request);
     }
 
     @DeleteMapping("/{id}")
