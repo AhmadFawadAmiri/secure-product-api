@@ -6,35 +6,36 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final SecretKey key = Jwts.SIG.HS256.key().build(); //Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final int jwtExpiration = 86400000;
 
     public String generateToken(String username){
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime()+jwtExpiration))
+                .subject(username)
+                .issuedAt(new Date())
+                .expiration(new Date(new Date().getTime()+jwtExpiration))
                 .signWith(key)
                 .compact();
     }
 
-    public String getUsernameFromTocken(String token){
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+    public String getUsernameFromToken(String token){
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
         return claims.getSubject();
     }
 
     public boolean validateToken(String token){
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             return true;
         }catch (Exception e){
             return false;

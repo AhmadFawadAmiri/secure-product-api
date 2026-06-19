@@ -31,7 +31,7 @@ public class ProductServiceTest {
     private CategoryRepository categoryRepository;
 
     @Mock
-    private TagRepository tagRepositoy;
+    private TagRepository tagRepository;
 
     @InjectMocks
     private ProductService productService;
@@ -66,7 +66,7 @@ public class ProductServiceTest {
 
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
-        when(tagRepositoy.findByName(anyString())).thenReturn(Optional.empty());
+        when(tagRepository.findByName(anyString())).thenReturn(Optional.empty());
 
         ProductDto resultDto = productService.saveProductDto(request);
 

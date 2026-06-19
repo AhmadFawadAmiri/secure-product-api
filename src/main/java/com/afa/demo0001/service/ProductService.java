@@ -104,6 +104,7 @@ public class ProductService {
                 updateProduct.getCategory()!=null?updateProduct.getCategory().getName():"Without Category");
     }
 
+    @Transactional
     public void deleteProduct(Long id){
         Product product = productRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("Product not found with ID " + id));
