@@ -1,11 +1,11 @@
-# 🛒 Enterprise Product & Category Management API (with JWT, Testing & Docker)
 
+# 🛒 Spring Boot Secure Product Management API (with JWT Security, DTO Architecture, Testing and Docker)
 👤 **Developed by:** **Ahmad Fawad Amiri** 🔗 **GitHub:** [@AhmadFawadAmiri](https://github.com/AhmadFawadAmiri)  
 💼 **Role:** Backend Engineer (Java / Spring Boot)
 
 ---
 
-A robust, production-ready RESTful API built with **Spring Boot 3.x** and **Spring Data JPA** utilizing a clean 3-tier architecture. This project has evolved from a basic CRUD service into a secure, scalable, fully unit-tested, and **fully containerized (Dockerized)** backend baseline that handles complex database relationships while ensuring strict architectural decoupling.
+A backend REST API built with Spring Boot demonstrating secure authentication, database relationships, DTO architecture, testing and Docker containerization.
 
 ---
 
@@ -14,18 +14,18 @@ A robust, production-ready RESTful API built with **Spring Boot 3.x** and **Spri
 * **🔒 Stateless Security (JWT):** Integrated with Spring Security using JSON Web Tokens (JWT) for secure, stateless authentication and Role-Based Access Control (RBAC).
 * **🐳 Fully Containerized (Docker & Compose):** Multi-container setup utilizing Docker Healthchecks to guarantee the Spring Boot application only fires up *after* the MySQL container is fully operational, healthy, and ready to accept connections.
 * **🏗️ Clean 3-Tier Layered Architecture:** Strict separation of concerns across Web (Controllers), Business (Services), and Data Access (Repositories) layers.
-* **📦 Advanced DTO Pattern:** Decouples Database Entities from the presentation layer using specialized payload objects (`ProductCreateRequest`, `ProductDto`) to protect schema integrity and eliminate infinite serialization loops.
+* **📦 DTO-based API Design:** Decouples Database Entities from the presentation layer using specialized payload objects (`ProductCreateRequest`, `ProductDto`) to protect schema integrity and eliminate infinite serialization loops.
 * **🛡️ Robust Many-to-Many Relationships:** Smart handling of self-healing `Product <-> Tag` relationships—automatically fetching existing tags or persisting new ones on the fly without database duplicates.
 * **📑 Pagination & Sorting:** Optimized database querying using Spring Data JPA `Pageable` (`pageNo`, `pageSize`, `sortBy`) to handle large datasets efficiently.
 * **🎯 Global Exception Handling:** A centralized `@RestControllerAdvice` that intercepts low-level system, validation, or business exceptions and translates them into predictable, frontend-friendly JSON contracts.
-* **🧪 Mockito-Powered Unit Testing:** Core business services are strictly guarded with isolated unit tests using Mockito for dependency mocking.
+* **🧪 Mockito-Powered Unit Testing:** Implemented unit tests for core service operations using Mockito.
 
 ---
 
 ## 🛠️ Tech Stack & Tools
 
-* **Backend Framework:** Java 21, Spring Boot 3.x
-* **Security:** Spring Security, Nimbus-JWT / jjwt
+* **Backend Framework:** Java 21, Spring Boot 4.x
+* **Security:** Spring Security, JWT / jjwt
 * **Data Access:** Spring Data JPA (Hibernate)
 * **Database:** MySQL 8.0 (Dockerized) / H2 (In-Memory Database)
 * **Validation:** Jakarta Validation API (`@NotBlank`, `@Min`, `@Size`)
@@ -48,7 +48,7 @@ src/main/java/com/afa/demo0001/
 ```
 ## 📡 Core API Endpoints Showcase
 ### 1. Products Layer
-   GET /api/products?pageNo=0&pageSize=10&sortBy=price - Fetch paginated and sorted products.
+GET /api/products?pageNo=0&pageSize=10&sortBy=price - Fetch paginated and sorted products.
 
 POST /api/products - Create a new product with automated tag binding. (Requires Authentication)
 
@@ -200,6 +200,17 @@ To prevent this, the project POM contains empty overrides for these elements. If
 
 ---
 
+## Project Status
+
+Completed backend learning project demonstrating:
+- Secure REST API development
+- Database relationship modeling
+- JWT authentication
+- DTO-based architecture
+- Docker containerization
+
+Future improvements are not part of this project scope.
+
 ## 📚 Reference Documentation & Guides
 For further framework reference, please consider the following official sections:
 
@@ -218,8 +229,8 @@ For further framework reference, please consider the following official sections
 * Building REST services with Spring Tutorial
 ---
 
-## 🎓 Advanced Learning Outcomes
-By evolving this project, the following senior-level paradigms were mastered:
+## 🎓 Key Learning Outcomes
+By evolving this project, the following level paradigms were mastered:
 
 * **Stateless Token-Based Authentication:** Overcoming session-based limitations by implementing a secure JWT filter chain.
 

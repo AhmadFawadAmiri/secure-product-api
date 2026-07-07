@@ -5,15 +5,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.1.0</version>
+		<version>4.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.afa</groupId>
-	<artifactId>demo0001</artifactId>
+	<artifactId>secure-product-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
-	<url/>
+    <name>Secure Product Api</name>
+    <description>
+        Spring Boot REST API with JWT Security, DTO, JPA and Docker
+    </description>
+    	<url/>
 	<licenses>
 		<license/>
 	</licenses>
